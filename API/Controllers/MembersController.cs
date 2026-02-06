@@ -1,31 +1,38 @@
 using API.Data;
 using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    
-    public class MembersController(AppDbContext context) : BaseApiController
+    [Authorize]
+    public class MembersController(IMemberRepository memberRepository) : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<AppUser>>> GetMembers()
+        public async Task<ActionResult<List<Member>>> GetMembers()
         {
-            var members = await context.Users.ToListAsync();
+            var members = await memberRepository.GetMembersAsync();
             return Ok(members);
         }
 
-        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetMemberById(string id)
+        public async Task<ActionResult<Member>> GetMemberById(string id)
         {
-            var member = await context.Users.FindAsync(id);
+            var member = await memberRepository.GetMemberByIdAsync(id);
             if(member ==null)
             {
                 return NotFound();
             }
             return Ok(member);
+        }
+
+
+        [HttpGet("{id}/photos")]
+        public async Task<ActionResult<List<Photo>>> GetPhotosForMembersAsync(string id)
+        {
+            var photos = await memberRepository.GetPhotosForMemberAsync(id);
+            return Ok(photos);
         }
     }
 }
