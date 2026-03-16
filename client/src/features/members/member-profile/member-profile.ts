@@ -39,7 +39,6 @@ export class MemberProfile implements OnInit, OnDestroy{
       city: this.memberService.member()?.city || '',
       country: this.memberService.member()?.country || ''
     }
-    
   }
 
   updateProfile() {
