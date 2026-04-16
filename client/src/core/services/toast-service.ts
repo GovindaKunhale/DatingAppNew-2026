@@ -4,9 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ToastService {
-  /**
-   *
-   */
+
   constructor() {
     this.createToastContainer();
   }
@@ -15,7 +13,7 @@ export class ToastService {
     if (!document.getElementById('toast-container')) {
       const container = document.createElement('div');
       container.id = 'toast-container';
-      container.className = 'toast toast-bottom toast-end';
+      container.className = 'toast toast-bottom toast-end z-50';
       document.body.appendChild(container);
     }
   }

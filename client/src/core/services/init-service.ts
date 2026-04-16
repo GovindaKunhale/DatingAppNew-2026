@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AccountService } from './account-service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { LikesService } from './likes-service';
 
 @Injectable({
@@ -11,12 +11,14 @@ export class InitService {
   private likesService = inject(LikesService);
 // This service initializes the application by checking for a stored user in localStorage
   inIt() {   
-    const userString = localStorage.getItem('user');
-    if (!userString) return of(null);
-    const user = JSON.parse(userString);
-    this.accountService.currentUser.set(user);
-    this.likesService.getLikeIds();
+    return this.accountService.refreshToken().pipe(
+      tap(user => {
+        if (user) {
+          this.accountService.setCurrentUser(user);
+          this.accountService.startTokenRefreshInterval();
+        }
+      })
+    )
 
-    return of(null);
   }
 }

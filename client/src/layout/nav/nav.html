@@ -14,10 +14,11 @@
         </div>
         <nav class="flex gap-3 my-2 text-white">
             @if (accountService.currentUser()) {
-            <a routerLink="/members" routerLinkActive="text-accent"
-                [routerLinkActiveOptions]="{exact: true}">Matches</a>
-            <a routerLink="/lists" routerLinkActive="text-accent">Lists</a>
-            <a routerLink="/messages" routerLinkActive="text-accent">Messages</a>
+                <a routerLink="/members" routerLinkActive="text-accent"
+                    [routerLinkActiveOptions]="{exact: true}">MATCHES</a>
+                <a routerLink="/lists" routerLinkActive="text-accent">LISTS</a>
+                <a routerLink="/messages" routerLinkActive="text-accent">MESSAGES</a>
+                <a *appHasRole="['Admin', 'Moderator']" routerLink="/admin" routerLinkActive="text-accent">ADMIN</a>
             }
             <a routerLink="/errors" routerLinkActive="text-accent">Errors</a>
 
